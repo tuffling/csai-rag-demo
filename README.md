@@ -4,17 +4,17 @@ Ask questions about **Quokka Quantum Snacks**, a snack company that doesn't exis
 
 ---
 
-## Setup: one line
+## Setup
 
 Copy the line for your computer, paste it into a terminal and press Enter.
 
-**Mac:** open **Terminal** (Cmd + Space, type "Terminal")
+**Mac:**
 
 ```bash
 curl -LsSf https://raw.githubusercontent.com/tuffling/csai-rag-demo/main/install.sh | sh
 ```
 
-**Windows:** open **PowerShell** (press the Windows key, type "PowerShell")
+**Windows:**
 
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/tuffling/csai-rag-demo/main/install.ps1 | iex"
