@@ -1,135 +1,94 @@
-# Mini RAG: Ask Questions About a Company That Doesn't Exist
+# CSAI Club RAG Demo
 
-A tiny **Retrieval-Augmented Generation (RAG)** demo for the CSAI club.
-
-**Quokka Quantum Snacks** is a made-up snack company with an employee handbook, product catalog, office guide and more. No AI model has ever seen these documents, so ChatGPT can't answer questions about them... unless we use RAG.
-
-```
-1. INGESTION   docs/*.md  ->  chunks  ->  embedding vectors (384 numbers each)
-2. RETRIEVAL   your question  ->  vector  ->  cosine similarity  ->  top 3 chunks
-3. AUGMENT     paste those chunks into a prompt
-4. GENERATE    you paste the prompt into ChatGPT / Claude / Gemini
-```
-
-It's all in **one file, [`rag.py`](rag.py)** (under 400 lines, lots of comments). Read it!
+Ask questions about **Quokka Quantum Snacks**, a snack company that doesn't exist. No AI model has ever seen its documents, so a chatbot on its own can only guess. This demo finds the right paragraphs and builds a prompt you paste into any chatbot to get the real answer.
 
 ---
 
-## Setup (about 2 minutes)
+## Setup: one line
 
-You **don't** need to install Python yourself. We use [**uv**](https://docs.astral.sh/uv/), which downloads the right Python and libraries for you.
+Copy the line for your computer, paste it into a terminal and press Enter.
 
-### Step 1: Download this project
-
-Click the green **`<> Code`** button at the top of this page, then **Download ZIP**.
-
-- **Windows:** right-click the ZIP and choose **Extract All...**. Don't work from inside the ZIP!
-- **Mac:** double-click the ZIP and it unzips itself.
-
-You'll get a folder called `csai-rag-demo-main`.
-
-(If you know git, `git clone` works too.)
-
-### Step 2: Install uv
-
-<table>
-<tr><th>Windows</th><th>Mac</th></tr>
-<tr><td>
-
-Press the **Windows key**, type **PowerShell** and open it. Paste this and press Enter:
-
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-</td><td>
-
-Press **Cmd + Space**, type **Terminal** and open it. Paste this and press Enter:
+**Mac:** open **Terminal** (Cmd + Space, type "Terminal")
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/tuffling/csai-rag-demo/main/install.sh | sh
 ```
 
-</td></tr>
-</table>
+**Windows:** open **PowerShell** (press the Windows key, type "PowerShell")
 
-> **Close the terminal window and open a new one** when it finishes. This is the #1 thing people miss!
-
-### Step 3: Open a terminal *in the project folder*
-
-<table>
-<tr><th>Windows</th><th>Mac</th></tr>
-<tr><td>
-
-Open the `csai-rag-demo-main` folder in File Explorer (the one containing `rag.py`). **Right-click an empty space** and choose **Open in Terminal**.
-
-<sub>No such option? Click the address bar at the top of File Explorer, type `powershell` and press Enter.</sub>
-
-</td><td>
-
-In Terminal, type `cd ` (with a space after it), then **drag the `csai-rag-demo-main` folder** from Finder into the Terminal window and press Enter.
-
-</td></tr>
-</table>
-
-### Step 4: Run it
-
-```
-uv run rag.py
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/tuffling/csai-rag-demo/main/install.ps1 | iex"
 ```
 
-The first run downloads Python, a few libraries and the embedding model (~150 MB total), so give it a minute. After that it starts instantly.
+That's it. It installs [uv](https://docs.astral.sh/uv/) (which handles Python for you), downloads the demo into a `csai-rag-demo` folder in your home folder, and starts it. The first run downloads ~150 MB, so give it a minute.
 
-> **Tip for the meeting:** run `uv run rag.py --setup` ahead of time so everything is downloaded before the Wi-Fi gets crowded.
+**To start it again later, paste the same line again.** It won't re-download anything or overwrite your changes.
 
 ---
 
-## How to use it
+## Using the demo
 
-Type a question and press Enter:
+When you see `ask>`, type a question and press Enter:
 
 ```
 ask> Can I work from Japan for a month?
 ```
 
-You'll see:
-1. The **top 3 chunks** it retrieved, with their **cosine similarity** scores (closer to 1 = more similar).
-2. The **augmented prompt**, which is the chunks plus your question plus instructions. It's **copied to your clipboard** automatically (and saved to `prompt.txt`).
+You get two things back:
 
-Paste it into [ChatGPT](https://chatgpt.com), [Claude](https://claude.ai) or [Gemini](https://gemini.google.com) and watch it answer correctly.
+1. **A table of the 3 best-matching chunks** from the company docs, with a **score** for each (higher = closer in meaning to your question) and which file it came from.
+2. **A ready-made prompt** with those chunks, your question and some instructions. It's **already copied to your clipboard** (and saved to `prompt.txt`).
+
+Paste the prompt into [ChatGPT](https://chatgpt.com), [Gemini](https://gemini.google.com) or any other chatbot and see what it says.
 
 ### Commands
 
-| Command | What it does |
+| Type this | What happens |
 |---|---|
-| `:vec king` | Show the embedding vector for some text (it's just a list of 384 numbers!) |
-| `:sim king \| queen` | Cosine similarity between two pieces of text |
-| `:keyword Who is the boss?` | Compare old-school keyword search vs embedding search |
-| `:k 5` | Retrieve 5 chunks instead of 3 |
+| any question | Find the best chunks and build the prompt |
+| `:vec king` | Show the vector (list of numbers) for some text |
+| `:sim king \| queen` | Score how similar two pieces of text are |
+| `:keyword Who is the boss?` | Compare plain keyword search with embedding search |
+| `:k 5` | Use the top 5 chunks instead of 3 |
 | `:docs` | List the documents and how many chunks each became |
 | `:quit` | Exit |
+
+### Questions to try
+
+- How many PTO days do employees get?
+- Why were Wave Function Wafers discontinued?
+- Who should I call if I lose my laptop?
+- What is Project Tachyon?
+- How much is the per diem for a trip to Toronto?
 
 ---
 
 ## Missions
 
-**1. RAG vs no RAG.** Ask ChatGPT (or any chatbot) *"Can I work from Japan for a month at Quokka Quantum Snacks?"* with no context. Then ask the same question in `rag.py` and paste the augmented prompt into the chatbot. What changed?
+**1. With vs. without.** Ask a chatbot *"Can I work from Japan for a month at Quokka Quantum Snacks?"* on its own. Then ask the same thing in the demo and paste the prompt into a new chat. What changed?
 
-**2. Meaning beats matching.** Try `:keyword My computer got stolen, who should I call?` and `:keyword Who is the boss?`. The docs never say "computer", "stolen" or "boss". Why does embedding search still find the right chunks?
+**2. Meaning beats matching.** Try `:keyword Who is the boss?` and `:keyword My computer got stolen, who should I call?`. The docs never use the words "boss", "computer" or "stolen". Which search still finds the right file?
 
-**3. Ask something that isn't there.** Try *"What is the 401k match?"*. Look at the scores: how do they compare to a question that *does* have an answer? Paste the prompt. Does the chatbot admit it doesn't know?
+**3. Ask something that isn't there.** Try *"What is the 401k match?"* Compare the scores to a question that does have an answer. Paste the prompt: does the chatbot admit it doesn't know?
 
-**4. Play with vectors.**
-- `:sim king | queen`
-- `:sim cat | dog`
-- `:sim cat | spreadsheet`
-- `:sim I love pizza | pizza is my favorite food`
+**4. Play with vectors.** Try `:sim king | queen`, `:sim cat | dog` and `:sim cat | spreadsheet`. Can you find two sentences with **no words in common** that still score high?
 
-Can you find two sentences with **no words in common** but a high score?
+**5. Tinker.** Open the `csai-rag-demo` folder (in your home folder) and edit `rag.py` in any text editor. Change `CHUNK_SIZE`, `OVERLAP` or `TOP_K` near the top, then start the demo again. Or drop your own `.md` or `.txt` file into `docs/` (a made-up policy, your class notes...) and ask about it.
 
-**5. Tinker.** Open `rag.py` in any text editor and change `CHUNK_SIZE`, `OVERLAP` or `TOP_K` near the top, then re-run. Or **add your own `.md` or `.txt` file to `docs/`**: invent a new company policy, or paste your class syllabus! The index rebuilds automatically.
+**6. Bonus: catch the bug.** Ask *"How many vacation days do I get?"* and paste the prompt into a chatbot. Is the answer right? Compare `docs/employee-handbook.md` with `docs/pto-policy-2023.md`. Why did this happen, and how would you fix it?
 
-**6. Bonus: catch the bug.** Ask *"How many vacation days do I get?"* and paste the prompt into a chatbot. Is the answer right? (Hint: look at `docs/employee-handbook.md` and `docs/pto-policy-2023.md`.) Why did this happen, and how would you fix it?
+---
+
+## What's in the folder
+
+| File | What it is |
+|---|---|
+| `rag.py` | The whole demo in one file. The four steps are labeled: **ingestion**, **retrieval**, **augment**, **generate** |
+| `docs/` | 12 made-up company documents: handbook, product catalog, office guide, org chart... |
+| `.cache/` | Created on the first run: the downloaded embedding model and the saved vectors |
+| `prompt.txt` | The last prompt the demo built |
+
+The embedding model is [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2). It runs on your laptop, so your questions don't leave your computer until you paste them somewhere.
 
 ---
 
@@ -137,20 +96,8 @@ Can you find two sentences with **no words in common** but a high score?
 
 | Problem | Fix |
 |---|---|
-| `uv: command not found` / `'uv' is not recognized` | Close the terminal and open a new one. Still broken? **Mac:** run `source $HOME/.local/bin/env`. **Windows:** run `$env:Path = "$env:USERPROFILE\.local\bin;$env:Path"` |
-| `No such file or directory: rag.py` | Your terminal isn't in the project folder. Redo Step 3. |
-| `Couldn't download the embedding model` | Check your Wi-Fi and try again in a minute. Hugging Face (where the model lives) is occasionally down. |
-| Clipboard copy didn't work | Open `prompt.txt` in the project folder and copy from there. |
-| Nothing works on my laptop | Use **GitHub Codespaces**: on this repo's page, click **`<> Code` -> Codespaces -> Create codespace**, then in the terminal at the bottom run `pip install uv` and then `uv run rag.py`. |
+| `Couldn't download the embedding model` | Check your Wi-Fi and paste the line again in a minute. The model host (Hugging Face) is occasionally down. |
+| Clipboard copy didn't work | Open `prompt.txt` in the `csai-rag-demo` folder and copy it from there. |
+| Nothing works on my laptop | Use **GitHub Codespaces**: on this page click **`<> Code` → Codespaces → Create codespace**, then paste the **Mac** line into the terminal at the bottom. |
 
----
-
-## What's in here
-
-```
-rag.py         the whole RAG pipeline: ingestion, retrieval, augmentation
-docs/          12 made-up company documents (the "knowledge base")
-.cache/        created on first run: the downloaded model + saved vectors
-```
-
-Embedding model: [`sentence-transformers/all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) running locally through [fastembed](https://github.com/qdrant/fastembed). Nothing you type leaves your computer (until you paste it into a chatbot).
+Already know git? `git clone` this repo and run `uv run rag.py` inside it.

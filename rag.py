@@ -18,7 +18,7 @@ The pipeline, the same as on the slides:
     1. INGESTION   docs/*.md  ->  chunks  ->  embedding vectors
     2. RETRIEVAL   question   ->  vector  ->  cosine similarity  ->  top-k chunks
     3. AUGMENT     stuff the top-k chunks into a prompt
-    4. GENERATE    paste that prompt into any chatbot (ChatGPT, Claude, Gemini, ...)
+    4. GENERATE    paste that prompt into any chatbot (ChatGPT, Gemini, ...)
 """
 
 import argparse
@@ -236,7 +236,7 @@ def hand_off(prompt: str) -> None:
         where = "[bold green]Copied to your clipboard[/] (also saved to prompt.txt)."
     except Exception:
         where = "Saved to [bold]prompt.txt[/] (couldn't reach your clipboard)."
-    console.print(f"{where} Paste it into ChatGPT, Claude, or Gemini.\n")
+    console.print(f"{where} Paste it into ChatGPT, Gemini, or any chatbot.\n")
 
 
 # ---------------------------------------------------------------------------
@@ -364,7 +364,8 @@ def main() -> None:
     chunks, vectors = build_index()
 
     if args.setup:
-        console.print("[bold green]All set![/] Run [bold]uv run rag.py[/] to start asking questions.")
+        console.print("[bold green]All set![/] Start asking questions with [bold]uv run rag.py[/] "
+                      "(or just paste the setup line again).")
     elif args.ask:
         hits = ask(args.ask, chunks, vectors, args.k)
         if args.expect and hits[0][1]["source"] != args.expect:

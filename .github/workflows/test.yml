@@ -17,3 +17,19 @@ jobs:
       - run: uv run rag.py --ask "How many PTO days do employees get?" --expect employee-handbook.md
       - run: uv run rag.py --ask "My computer got stolen, who should I call?" --expect it-security-faq.md
       - run: uv run rag.py --ask "Can I work from Japan for a month?" --expect remote-work-policy.md
+
+  # The one-line setup from the README, on fresh machines without uv.
+  one-line-setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: curl -LsSf https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/install.sh | sh
+
+  one-line-setup-windows:
+    runs-on: windows-latest
+    steps:
+      - shell: powershell
+        run: powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/install.ps1 | iex"
