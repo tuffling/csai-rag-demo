@@ -17,6 +17,7 @@ jobs:
       - run: uv run rag.py --ask "How many PTO days do employees get?" --expect employee-handbook.md
       - run: uv run rag.py --ask "My computer got stolen, who should I call?" --expect it-security-faq.md
       - run: uv run rag.py --ask "Can I work from Japan for a month?" --expect remote-work-policy.md
+      - run: uv run rag.py --docs tacobell --ask "How much is the Fourth Meal Club?" --expect fourth-meal-club.md
 
   # The one-line setup from the README, on fresh machines without uv.
   one-line-setup:
