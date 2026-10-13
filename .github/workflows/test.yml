@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - run: uv run rag.py --setup
       - run: uv run rag.py --ask "How many PTO days do employees get?" --expect employee-handbook.md
       - run: uv run rag.py --ask "My computer got stolen, who should I call?" --expect it-security-faq.md
