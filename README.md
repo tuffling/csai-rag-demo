@@ -109,6 +109,35 @@ Put the two chats side by side and compare.
 
 ---
 
+## Want to go further?
+
+### Watch
+
+Short videos from IBM Technology that explain the ideas behind this demo:
+
+| Video | What you'll learn |
+|---|---|
+| [What is Retrieval-Augmented Generation (RAG)?](https://www.youtube.com/watch?v=T-D1OfcDW1M) | The big picture: why chatbots need to look things up |
+| [What is a Vector Database?](https://www.youtube.com/watch?v=gl1r1XV0SLw) | Where the vectors live in a real RAG system |
+| [RAG vs. Fine Tuning](https://www.youtube.com/watch?v=00Q0G84kq3M) | When to give the model documents vs. retrain it |
+| [RAG vs Fine-Tuning vs Prompt Engineering](https://www.youtube.com/watch?v=zYGDpG-pTho) | The three ways to get better answers, side by side |
+
+Want to build one yourself, step by step? Try [Local RAG from Scratch](https://www.youtube.com/watch?v=qN_2fnOPY-M) by Daniel Bourke.
+
+### Build
+
+Ideas for taking `rag.py` further, roughly easiest first:
+
+- **Use your own notes.** Put a semester of class notes in `docs/mine/` and type `:use mine`. Does it answer exam-style questions?
+- **Swap the embedding model.** Change `EMBEDDING_MODEL` near the top of `rag.py` to `BAAI/bge-small-en-v1.5` and run the missions again. Do the scores or the top chunks change?
+- **Fix the bonus bug.** Make retrieval prefer newer documents, for example by skipping files with an old year in the name, or by adding a date to each chunk.
+- **Hybrid search.** `keyword_search()` and `retrieve()` are both in `rag.py`. Combine their scores so exact names and IDs match as well as meanings.
+- **Automate the last step.** Instead of pasting the prompt into a chatbot, send it to an LLM API so the demo answers on its own.
+- **Use a real vector database.** Store the vectors in [Chroma](https://www.trychroma.com/) instead of a `.npy` file.
+- **Grade your RAG.** Write 10 questions with known answers and count how often the right file shows up in the top 3. Then change `CHUNK_SIZE` and see if the score goes up.
+
+---
+
 ## What's in the folder
 
 | File | What it is |
